@@ -33,3 +33,7 @@ class BaseModel:
     def delete(self, record_id: int) -> None:
         self.conn.execute(f"DELETE FROM {self.table} WHERE id = ?", (record_id,))
         self.conn.commit()
+
+    def raw_execute(self, query_string, query_values):
+        self.conn.execute(query_string, query_values)
+        self.conn.commit()
