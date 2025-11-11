@@ -285,3 +285,47 @@ def run(conn):
         print(f"Environment: {env}, Type: {source_type}, Count: {count}")
 
     print("\nMock data generation completed!")
+
+def auto_run(conn):
+    total_records=50
+    envs = ['prod', 'uat', 'dev']
+    env_distribution = {
+        'prod': int(total_records * 0.5),
+        'uat': int(total_records * 0.3),
+        'dev': int(total_records * 0.2)
+    }
+
+    generator = IncidentLogGenerator()
+
+    for env, count in env_distribution.items():
+        print(f"{env.upper()}: {count} records")
+
+
+    records_created = 0
+    for env in envs:
+        count = env_distribution[env]
+        for i in range(count):
+            source_type = "ActivityLog" if random.random() < 0.7 else "MetricLog"
+            log = (generator.generate_activity_log(env)
+                   if source_type == "ActivityLog"
+                   else generator.generate_metric_log(env))
+            payload_id = str(uuid.uuid4())
+            created_at = datetime.utcnow() - timedelta(minutes=random.randint(0, 1440))
+            
+            conn.execute("""
+                INSERT INTO incident_logs
+                (payload_id, payload, source_type, status, created_at)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                payload_id,
+                json.dumps(log),
+                source_type,
+                "new",
+                created_at.isoformat(sep=' ', timespec='seconds'),
+            ))
+
+            records_created += 1
+            if records_created % 50 == 0:
+                print(f"Created {records_created} records...")
+
+conn.commit()
