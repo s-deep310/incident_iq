@@ -9,3 +9,8 @@ class ReportModel(BaseModel):
         cur = self.conn.execute('SELECT * FROM companies WHERE environment = ?', (environment))
         r = cur.fetchone()
         return dict(r) if r else None
+
+    def report_dashboard(self,environment):
+        cur = self.conn.execute('SELECT root_cause,environment,severity,summary,recommendation FROM companies WHERE environment = ?', (environment))
+        r = cur.fetchone()
+        return dict(r) if r else None
