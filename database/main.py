@@ -29,8 +29,23 @@ def run_seeders(conn):
     for file in sorted(seeders_dir.glob("*.py")):
         module_name = f"seeders.{file.stem}"
         module = import_module(module_name)
+
         if hasattr(module, "run"):
-            module.run(conn)
+            if hasattr(module,"table_name"):
+                table_name = module.table_name
+                cursor =conn.cursor()
+                cursor.execute(f"select count(*) from {table_name}")
+                count = cursor.fetchone() [0]
+
+                if count > 0:
+                    continue
+
+                else:
+                    module.run(conn)
+
+            else:
+                module.run(conn)
+
     print("✅ Seeders complete.\n")
 
 
@@ -71,4 +86,4 @@ if __name__ == "__main__":
     conn = get_connection()
     while True:
         auto_run(conn)
-        time.sleep(20)
+        time.sleep(30)
