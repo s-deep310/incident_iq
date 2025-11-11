@@ -7,29 +7,50 @@ conn = get_connection()
 users = UserModel(conn)
 
 # 🟢 CREATE
-new_user_id = users.insert({
-    'name': 'Charlie',
-    'email': 'charlie@example.com',
-    'password': 'hashed_pw_123'
-})
-print("New user created:", users.find(new_user_id))
+new_user_id = {
+    'name': 'bob',
+    'email': 'bob@example.com',
+    'password': '_hash(pw_123)'
+}
 
-# 🟡 READ
-all_users = users.all()
-print("All Users:", all_users)
+# users.insert(new_user_id)
+# print("New user created:", users.find(new_user_id))
 
-# 🔵 UPDATE
-users.update(new_user_id, {'name': 'Charlie Brown'})
-print("Updated:", users.find(new_user_id))
+# # 🟡 READ
+# all_users = users.all()
+# print("All Users:", all_users)
 
-# 🔴 DELETE
-users.delete(new_user_id)
-print("After delete:", users.find(new_user_id))
+# # 🔵 UPDATE
+# users.update(new_user_id, {'name': 'Charlie Brown'})
+# print("Updated:", users.find(new_user_id))
 
-# 📎 Check user roles
-user_roles = UserRoleModel(conn).for_user(1)
-print("Roles for Root User:", user_roles)
+# # 🔴 DELETE
+# users.delete(7)
+# print("After delete:", users.find(7))
+
+# # 📎 Check user roles
+# user_roles = UserRoleModel(conn).for_user(1)
+# print("Roles for Root User:", user_roles)
 
 # 🏢 Check company users
-company_users = CompanyUserModel(conn).for_company(2)
-print("Company users for Acme Corp:", company_users)
+# company_users = CompanyUserModel(conn).for_company(2)
+# print("Company users for Acme Corp:", company_users)
+
+# user1= UserModel(conn).find_user_full_profile(2)
+# print("User full details:", company_users)
+
+# user2 = UserModel(conn).find_user_with_roles(3)
+# print("User details with:", company_users)
+
+auth= users.authenticate("svk@example.com","souvik123")
+print(auth)
+
+rows = users.raw_execute("SELECT * FROM users WHERE email = ?", ('svk@example.com',))
+for row in rows:
+    print(dict(row)) 
+
+# users.raw_execute(
+#     "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+#     ('Charl', 'charl@example.com', 'hashed_pw_123')
+# )
+
