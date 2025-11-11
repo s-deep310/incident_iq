@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 from importlib import import_module
 from db.connection import get_connection
+from seeders.seed_incident_log import auto_run
+import time
 
 # --- Ensure consistent project root ---
 BASE_DIR = Path(__file__).resolve().parent
@@ -61,8 +63,12 @@ def run():
         except Exception:
             pass
 
-    conn.close()
+    # conn.close()
 
 
 if __name__ == "__main__":
     run()
+    conn = get_connection()
+    while True:
+        auto_run(conn)
+        time.sleep(20)
