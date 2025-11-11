@@ -34,6 +34,10 @@ class BaseModel:
         self.conn.execute(f"DELETE FROM {self.table} WHERE id = ?", (record_id,))
         self.conn.commit()
 
-    def raw_execute(self, query_string, query_values):
-        self.conn.execute(query_string, query_values)
-        self.conn.commit()
+    def raw_execute(self, query_string, query_values=()):
+        cur = self.conn.execute(query_string, query_values)
+        if query_string.strip().upper().startswith("SELECT"):
+            return cur.fetchall()  # return all rows for select query
+        else:
+            self.conn.commit()
+            return None
