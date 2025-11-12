@@ -1,5 +1,4 @@
 from .base_model import BaseModel
-
 import hashlib
 
 def _hash(password):
@@ -67,10 +66,16 @@ class UserModel(BaseModel):
         cur = self.conn.execute(sql, (user_id,))
         return [dict(row) for row in cur.fetchall()]
     
-    def authenticate(self,email,password):
-        cur = self.conn.execute('select password from users where email = ?',(email,))
+    def authenticate(self,email, password):
+        cur = self.conn.execute('select * from users where email = ?',(email,))
         r = cur.fetchone()
+
         if not r:
             return False
-        stored_hash = r['password']
-        return stored_hash == _hash(password)
+        
+        return {
+            'is_loggedin': r['password'] == _hash(password),
+            email: r['email'],
+            'name': r['name'],
+            'id':r['id']    
+        }
