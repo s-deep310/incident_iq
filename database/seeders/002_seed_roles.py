@@ -1,3 +1,5 @@
+table_name = "roles"
+
 def run(conn):
     roles = ['admin', 'manager','devloper', 'employee',]
     for r in roles:
