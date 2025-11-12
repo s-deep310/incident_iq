@@ -1,7 +1,7 @@
 import uuid
 import random
 from datetime import datetime, timedelta
-
+table_name ="knowledge_base"
 
 class KnowledgeBaseGenerator:
     def __init__(self, services, error_patterns):
