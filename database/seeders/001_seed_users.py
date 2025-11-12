@@ -1,5 +1,6 @@
 import hashlib
 
+table_name = "users"
 def _hash(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
