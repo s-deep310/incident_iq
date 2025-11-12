@@ -1,3 +1,5 @@
+table_name = "severity_rules"
+
 def run(conn):
     # Comprehensive severity rules data including environment tags
     rules_data = [
