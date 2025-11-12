@@ -1,3 +1,5 @@
+table_name = "departments"
+
 def run(conn):
     cur = conn.execute("SELECT id FROM companies WHERE name = ?", ('Acme Corp',))
     row = cur.fetchone()
