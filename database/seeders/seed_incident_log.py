@@ -328,4 +328,4 @@ def auto_run(conn):
             if records_created % 50 == 0:
                 print(f"Creating {records_created} records every 30 seconds...")
 
-conn.commit()
+    conn.commit()
