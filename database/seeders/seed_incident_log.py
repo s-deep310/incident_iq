@@ -4,6 +4,8 @@ import uuid
 import random
 from datetime import datetime, timedelta
 
+table_name = "incident_logs"
+
 class AzureEnvironmentConfig:
     def __init__(self):
         self.environments = {
