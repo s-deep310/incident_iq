@@ -9,6 +9,8 @@ def run(conn):
         rca TEXT NOT NULL,
         business_impact TEXT NOT NULL,
         estimated_recovery_time TEXT NOT NULL,
+        dollar_impact TEXT,
+        resource_type TEXT,
         environment TEXT NOT NULL,
         created_at TEXT NOT NULL
     );
